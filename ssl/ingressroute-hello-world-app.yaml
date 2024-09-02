@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure  # HTTPS should be configured 
   routes:
-    - match: Host(`hellow_world_app.com `)
+    - match: Host(`Hellow_World_App.com `)
       kind: Rule
       services:
         - name: hell-world-app

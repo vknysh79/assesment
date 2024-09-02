@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`hellow_world_app.com`)
+    - match: Host(`Hellow_World_App.com`)
       kind: Rule
       services:
         - name: hello-world-app
