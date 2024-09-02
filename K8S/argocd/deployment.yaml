@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello_world_app
+  name: hello-world-app
   namespace: argocd
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello_world_app
+      app: hello-world-app
   template:
     metadata:
       labels:
-        app: hello_world_app
+        app: hello-world-app
     spec:
       containers:
-      - name: hello_world_app
+      - name: hello-world-app
         image: vknysh79/hello_world:latest
         ports:
         - containerPort: 8080
