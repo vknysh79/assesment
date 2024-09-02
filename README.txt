@@ -63,7 +63,7 @@ kubectl get services // and check External IP and paste to a myapp-ingressroute-
 ================================================================================================
 !!!  -- From Bonus Task - access to diffrent teams I would use the next approach --
 --
- A. Staging approach is implemented in Jenkins_staging file + service and deployment yaml files. ( k8s/staging)
+ A. Staging approach is implemented in Jenkins_staging file + service and deployment yaml files. ( kuber/staging)
  B. Different NS and different Binding and Roles for Teams I would use the next approach 
 
 DevOps Group  - cluster-admin since it has a whole access 
@@ -100,8 +100,7 @@ Potential improvements in the future
 4. the best solution is to have one-click solution with the next stack implemented ( AWS, Terrafrom, Ansible, K8S, Vault, ELK, LBs, Grafana+Prometheus, GitLAB as CI)
 5. GitHub has some limitations for API connections, hence I'd recommend to use client's bitbucket or gitlab instances.
 6. Code PRs/MRs should be integrated with JIRA.
-7. For disaster recovery there should be one-click solution as well. ( migration to another cloud or DC)
-8. 
+7. For disaster recovery there should be one-click solution as well. ( migration to another cloud or DC, or from on-prem to Cloud and wise-versa)
 
 
 
