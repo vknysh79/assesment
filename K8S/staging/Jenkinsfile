@@ -1,0 +1,80 @@
+pipeline {
+    agent node-xl // cpu 4, ram 8 , ssd raid 0
+
+    environment {
+        DOCKER_CREDENTIALS_ID = 'remote_dh_creds' 
+        STAGING_NAMESPACE = 'staging'
+        DOCKER_IMAGE = 'hello_world:latest'
+        KUBE_CONTEXT = 'my-kube-context' // we should use another content in this case 
+        KUBECONFIG = credentials('kubeconfig') // here we have to add pour k8s credss to jenkins 
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${DOCKER_IMAGE}")
+                }
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        // Deploy the Docker image to the staging namespace
+                        sh '''
+                        kubectl --context=${KUBE_CONTEXT} -n ${STAGING_NAMESPACE} apply -f deployment.yaml
+                        kubectl --context=${KUBE_CONTEXT} -n ${STAGING_NAMESPACE} apply -f service.yaml
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    // Run unit and integration tests in the staging environment
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh '''
+                        kubectl --context=${KUBE_CONTEXT} -n ${STAGING_NAMESPACE} run test-runner --rm --image=${DOCKER_IMAGE} --command -- /bin/bash -c "pytest tests/unit; pytest tests/integration"
+                        '''
+                    }
+                }
+            }
+            post {
+                always {
+                    junit '**/test-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                script {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        // Optionally, clean up the staging environment
+                        sh '''
+                        kubectl --context=${KUBE_CONTEXT} -n ${STAGING_NAMESPACE} delete deployment <deployment-name>
+                        kubectl --context=${KUBE_CONTEXT} -n ${STAGING_NAMESPACE} delete service <service-name>
+                        '''
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Clean up resources
+            cleanWs()
+        }
+    }
+}

@@ -1,0 +1,36 @@
+globalArguments:
+  - "--log.level=DEBUG"
+
+additionalArguments:
+  - "--entryPoints.web.address=:80"
+  - "--entryPoints.websecure.address=:443"
+  - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+  - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+  - "--entryPoints.web.http.redirections.entryPoint.permanent=true"
+  - "--certificatesResolvers.le.acme.tlsChallenge=true"
+  - "--certificatesResolvers.le.acme.email=vknysh79@gmail.com"
+  - "--certificatesResolvers.le.acme.storage=/acme.json"
+  - "--certificatesResolvers.le.acme.httpChallenge.entryPoint=web"
+
+ports:
+  web:
+    expose: true
+    port: 80
+  websecure:
+    expose: true
+    port: 443
+
+volumeMounts:
+  - mountPath: "/acme.json"
+    name: acme-json
+
+volumes:
+  - name: acme-json
+    persistentVolumeClaim:
+      claimName: acme-pvc
+
+persistence:
+  enabled: true
+  storageClass: "standard"
+  accessMode: ReadWriteOnce
+  size: 2Gi
