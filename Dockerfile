@@ -4,4 +4,4 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8080
 ENV FLASK_APP=hello_world.py
-CMD ["python", "app.py"]
+CMD ["python", "hello_world.py"]
