@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: hello-world-app
-  namespace: argocd
+  namespace: k8s/argocd
 spec:
   destination:
     namespace: default
