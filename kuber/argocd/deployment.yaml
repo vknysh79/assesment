@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-world-app
-  namespace: default
+  namespace: argocd
 spec:
   replicas: 1
   selector:
