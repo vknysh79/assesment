@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm // This is a webhook trigger 
+                checkout scm // Works in Multibranch type of job 
             }
         }
 
