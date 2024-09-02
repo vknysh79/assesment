@@ -33,7 +33,7 @@ PUSH
 CLEAN WorkSpace 
 
 --
-3. K8s and Argo CD, all required fiels stored in gitHub repo in K8S folder
+3. K8s and Argo CD, all required fiels stored in gitHub repo in kuber folder
 I'm used to work with minikube 
 Also, it's rather to separate Teams, Applications, etc in different NameSpaces thus we create and then use a new one NS for argoCD
 
@@ -42,7 +42,7 @@ helm repo add traefik https://helm.traefik.io/traefik
 helm repo update
 helm install traefik traefik/traefik --namespace kube-system
 
-Switch to  K8S folder 
+Switch to kuber folder 
 ArgoCD setup and network access from 
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl port-forward svc/argocd-server -n argocd 8080:443
@@ -69,7 +69,7 @@ kubectl get services // and check External IP and paste to a myapp-ingressroute-
 DevOps Group  - cluster-admin since it has a whole access 
 QA Group - Staging & Dev Environment - Full Access but No Delete (we need to get rid of mistaken delition)
 
-K8S/access_roles 
+kuber/access_roles 
 DevOps admin access described in
 devops-admin-role.yaml
 devops-admin-binding.yaml
