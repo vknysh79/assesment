@@ -43,6 +43,7 @@ minikube start
 
 # It's rather to separate Teams, Applications, etc in different NameSpaces thus we create a new one NS  
 kubectl create namespace argocd
+
 cd K8S
 
 # Argo CD setup and network access from LH
@@ -51,6 +52,9 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 kubectl apply -f argocd-application.yaml 
 kubectl apply -f middleware-ip-whitelist.yaml
 kubectl apply -f ingressroute-hello-world-app.yaml
+
+# in order to login to argoCD UI 
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
 # all these fiels required for SSL 
 kubectl aaply -f values.yaml
@@ -63,17 +67,12 @@ kubectl get services // and check External IP and paste to a myapp-ingressroute-
 
 # from Bonus Task - access to diffrent teams I would use the next approach 
 --
-# Staging approach is implemented in Jenkins_staging file + service and deployment yaml files. 
---
-
-# Different NS and different Binding and Roles for Teams I would use the next approach 
+# A. Staging approach is implemented in Jenkins_staging file + service and deployment yaml files. ( k8s/staging)
+# B. Different NS and different Binding and Roles for Teams I would use the next approach 
 
 # DevOps Group  - cluster-admin since it has a whole access 
 # QA Group - Staging & Dev Environment - Full Access but No Delete
-
-# All files located in K8S/Access_roles 
-
-# to apply all of them 
+# All files located in K8S/access_roles 
 # Apply DevOps admin access
 kubectl apply -f devops-admin-role.yaml
 kubectl apply -f devops-admin-binding.yaml
@@ -81,6 +80,7 @@ kubectl apply -f devops-admin-binding.yaml
 # Apply QA access in staging and dev namespaces
 kubectl apply -f qa-role-staging.yaml
 kubectl apply -f qa-role-binding-staging.yaml
+
 kubectl apply -f qa-role-dev.yaml
 kubectl apply -f qa-role-binding-dev.yaml
 

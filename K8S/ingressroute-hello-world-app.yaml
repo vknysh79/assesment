@@ -1,7 +1,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: hello_world_app
+  name: hello-world-app
   namespace: default
 spec:
   entryPoints:
@@ -10,7 +10,7 @@ spec:
     - match: Host(`hellow_world_app.com `)
       kind: Rule
       services:
-        - name: hell_world_app
+        - name: hell-world-app
           port: 8080
       middlewares:
         - name: ip-whitelist
