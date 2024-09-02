@@ -9,25 +9,25 @@ Assesment steps and what principles were choseen:
 Before we start any CI/CD setup there's a need to "Dockerize the app provioded"
 --
 1. Python app dockerization 
-# This is Hello World Python app used for assesment.  
-# To build and run the app please use the next commands: (change tag name if needed )
+/// This is Hello World Python app used for assesment.  
+/// To build and run the app please use the next commands: (change tag name if needed )
 docker build -t hello_world:latest .  
 
-# To start the app please use the next statement 
+/// To start the app please use the next statement 
 docker run -d -p 8080:8080 hello_world 
 CRTL+C to exit
 
-# check app availability please use browser or curl command, you should see "Hello World" message
+/// check app availability please use browser or curl command, you should see "Hello World" message
 curl -X GET http://localhost:8080 
 
-# to publish Docker app in docker hub please use the next 
+/// to publish Docker app in docker hub please use the next 
 docker login
 docker push vknysh79/hello_world:latest
 
-# once you need to use this docker image
+/// once you need to use this docker image
 docker run -it -p 8080:8080 vknysh79/hello_world:latest
 
-# full docker hub url
+/// full docker hub url
 --
 2. CI - Jenkins file includes several steps: 
 SCM checkout ( webhook in jenkins: make sure that GitHub hook trigger for GITScm polling is checked)
@@ -38,53 +38,53 @@ CLEAN WorkSpace
 
 --
 3. K8s and Argo CD , all required fiels stored in gitHub repo in K8S folder
-# I'm used to work with minikube therfore
+/// I'm used to work with minikube therfore
 minikube start 
 
-# It's rather to separate Teams, Applications, etc in different NameSpaces thus we create a new one NS  
+/// It's rather to separate Teams, Applications, etc in different NameSpaces thus we create a new one NS  
 kubectl create namespace argocd
 
 cd K8S
 
-# Argo CD setup and network access from LH
+/// Argo CD setup and network access from LH
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 kubectl apply -f argocd-application.yaml 
 kubectl apply -f middleware-ip-whitelist.yaml
 kubectl apply -f ingressroute-hello-world-app.yaml
 
-# in order to login to argoCD UI 
+/// in order to login to argoCD UI 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
-# all these fiels required for SSL 
+/// all these fiels required for SSL 
 kubectl aaply -f values.yaml
 kubectl aaply -f acme-pvc.yaml
 kubectl aaply -f ingressroute-tls.yaml
 
-# I've notified that if you  dont have DNS name to be used thus there's a chance to use external IP thus ingress route should be amened
-# before you apply 
+/// I've notified that if you  dont have DNS name to be used thus there's a chance to use external IP thus ingress route should be amened
+/// before you apply 
 kubectl get services // and check External IP and paste to a myapp-ingressroute-ip.yaml
 
-# from Bonus Task - access to diffrent teams I would use the next approach 
+/// from Bonus Task - access to diffrent teams I would use the next approach 
 --
-# A. Staging approach is implemented in Jenkins_staging file + service and deployment yaml files. ( k8s/staging)
-# B. Different NS and different Binding and Roles for Teams I would use the next approach 
+/// A. Staging approach is implemented in Jenkins_staging file + service and deployment yaml files. ( k8s/staging)
+/// B. Different NS and different Binding and Roles for Teams I would use the next approach 
 
-# DevOps Group  - cluster-admin since it has a whole access 
-# QA Group - Staging & Dev Environment - Full Access but No Delete
-# All files located in K8S/access_roles 
-# Apply DevOps admin access
+/// DevOps Group  - cluster-admin since it has a whole access 
+/// QA Group - Staging & Dev Environment - Full Access but No Delete
+/// All files located in K8S/access_roles 
+/// Apply DevOps admin access
 kubectl apply -f devops-admin-role.yaml
 kubectl apply -f devops-admin-binding.yaml
 
-# Apply QA access in staging and dev namespaces
+/// Apply QA access in staging and dev namespaces
 kubectl apply -f qa-role-staging.yaml
 kubectl apply -f qa-role-binding-staging.yaml
 
 kubectl apply -f qa-role-dev.yaml
 kubectl apply -f qa-role-binding-dev.yaml
 
-# Apply Developer read-only access in dev namespace
+/// Apply Developer read-only access in dev namespace
 kubectl apply -f developer-view-role.yaml
 kubectl apply -f developer-view-role-binding.yaml
 
