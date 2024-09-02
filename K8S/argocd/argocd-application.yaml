@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'https://github.com/vknysh79/assesment.git'
-    path: 'argocd'
+    path: 'k8s/argocd'
     targetRevision: HEAD
   project: default
   syncPolicy:
