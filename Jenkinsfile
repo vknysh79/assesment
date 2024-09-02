@@ -1,5 +1,5 @@
 pipeline {
-    agent node-small // 2 cpu, ram 6, ssd  raid 1
+    agent any
     
     environment {
         DOCKER_CREDENTIALS_ID = 'remote_dh_creds' 
