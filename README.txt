@@ -27,9 +27,11 @@ docker push vknysh79/hello_world:latest
 Once you need to use this docker image
 docker run -it -p 8080:8080 vknysh79/hello_world:latest
 
-Full docker hub url
---
-2. CI - Jenkins file includes several steps: 
+
+2. Continious Integration 
+- Let's try to implement IaC approach since Jenkins file and Argo defined as a code. Helm app will help with K8S internal app/services deployment 
+
+CI - Jenkins file includes several steps: 
 SCM checkout ( webhook in jenkins: make sure that GitHub hook trigger for GITScm polling is checked)
 BUILD - jenkins worker nodes must have docker cli installed
 LOGIN (creds to docker hub stored in jenkins configuration)
@@ -37,13 +39,14 @@ PUSH
 CLEAN WorkSpace 
 
 --
-3. K8s and Argo CD , all required fiels stored in gitHub repo in K8S folder
+3. K8s and Argo CD, all required fiels stored in gitHub repo in K8S folder
 I'm used to work with minikube therfore
 minikube start 
 
 It's rather to separate Teams, Applications, etc in different NameSpaces thus we create a new one NS  
 kubectl create namespace argocd
 
+Switch to  K8S folder 
 cd K8S
 
 Use helm chart to get argoCD ready 

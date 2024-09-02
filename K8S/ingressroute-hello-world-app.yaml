@@ -2,7 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: hello-world-app
-  namespace: argocd
+  namespace: default
 spec:
   entryPoints:
     - websecure  # HTTPS should be configured 
