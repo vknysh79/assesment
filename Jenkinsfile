@@ -1,51 +1,46 @@
 pipeline {
     agent any
-    
-    environment {
-        DOCKER_CREDENTIALS_ID = 'remote_dh_creds' 
-        DOCKERHUB_REPO = 'vknysh79/hello_world'
-        DOCKER_TAG = 'latest'
-    }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm // Works in Multibranch type of job 
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'pytest tests/unit'
+            }
+        }
+
+        stage('Run Integration Tests') {
+            steps {
+                sh 'pytest tests/integration'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKERHUB_REPO}:${DOCKER_TAG}")
-                }
-            }
-        }
-
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
-                        echo "Logged in to Docker Hub :)"
-                    }
+                    docker.build("vknysh79/hello-world-app:latest")
                 }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('', DOCKER_CREDENTIALS_ID) {
-                        dockerImage.push()
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    sh 'docker push vknysh79/hello-world-app:latest'
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
         }
     }
 }
