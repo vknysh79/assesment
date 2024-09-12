@@ -91,6 +91,14 @@ What principles I tried to use
 3. Automation: reduce human eerror, reliability
 4. CI/CD: jenkins to build app and push images, argo cd it to deploy app to k8s
 
+p.s.
+
+added some tests
+in order to execute tests localy
+
+docker run --rm vknysh79/hello-world-app pytest tests/unit
+docker run --rm vknysh79/hello-world-app pytest tests/integration
+
 ----
 Potential improvements in the future
 
