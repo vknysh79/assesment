@@ -84,6 +84,17 @@ Apply Developer read-only access in dev namespace described in
 developer-view-role.yaml
 developer-view-role-binding.yaml
 
+--
+!! Automation 
+I've added Ansible deployment approach 
+before deployment pls execute the mext
+
+sudo apt update
+sudo apt install ansible -y
+
+In oder to deploy all the stuff
+ansible-playbook -i inventory.ini playbooks/setup.yml
+
 ----
 What principles I tried to use 
 1. gitops: with Argocd to sync K8s with one point of truth - github
