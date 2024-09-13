@@ -1,0 +1,33 @@
+---
+- name: Create DevOps role with cluster-wide admin access
+  kubernetes.core.k8s_role:
+    name: devops-admin
+    namespace: kube-system
+    api_version: rbac.authorization.k8s.io/v1
+    rules:
+      - apiGroups: [""]
+        resources: ["*"]
+        verbs: ["*"]
+
+- name: Create QA role for staging and dev environment
+  kubernetes.core.k8s_role:
+    name: qa-role
+    namespace: dev
+    api_version: rbac.authorization.k8s.io/v1
+    rules:
+      - apiGroups: [""]
+        resources: ["pods", "services", "configmaps", "secrets"]
+        verbs: ["get", "list", "watch", "create", "update", "patch"]
+      - apiGroups: ["apps"]
+        resources: ["deployments", "statefulsets"]
+        verbs: ["get", "list", "watch", "create", "update", "patch"]
+
+- name: Create Developer role for read-only access
+  kubernetes.core.k8s_role:
+    name: dev-readonly
+    namespace: dev
+    api_version: rbac.authorization.k8s.io/v1
+    rules:
+      - apiGroups: [""]
+        resources: ["pods", "services", "configmaps", "secrets"]
+        verbs: ["get", "list", "watch"]

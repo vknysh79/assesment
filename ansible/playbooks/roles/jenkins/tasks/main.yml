@@ -1,0 +1,13 @@
+---
+- name: Install Jenkins
+  shell: |
+    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
+    sh -c 'echo deb http://pkg.jenkins.io/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+    apt update
+    apt install jenkins -y
+
+- name: Start Jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: true

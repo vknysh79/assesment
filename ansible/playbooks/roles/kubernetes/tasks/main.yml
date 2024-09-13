@@ -1,0 +1,6 @@
+---
+- name: Start Minikube with Docker driver
+  shell: minikube start --driver=docker
+
+- name: Enable Ingress for Minikube
+  shell: minikube addons enable ingress

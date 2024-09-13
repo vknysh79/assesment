@@ -1,0 +1,12 @@
+---
+- name: Setup CI/CD and Kubernetes Environment
+  hosts: all
+  become: true
+
+  roles:
+    - common
+    - docker
+    - kubernetes
+    - jenkins
+    - argocd
+    - rbac
